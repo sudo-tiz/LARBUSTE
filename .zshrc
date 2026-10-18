@@ -72,11 +72,6 @@ alias \
     grep="grep --color=auto" \
     diff="diff --color=auto" \
     ip="ip -color=auto" \
-    ls="ls -hN --color=auto --group-directories-first" \
-    l="ls" \
-    ll="ls -l" \
-    la="ls -aF" \
-    lla="ls -laF" \
     ...="cd ../.." \
     ....="cd ../../.." \
     .....="cd ../../../.." \
@@ -92,20 +87,21 @@ alias \
 
 # LS / EZA
 if command -v eza >/dev/null 2>&1; then
-    l()   { eza -F -- "$@"; }
-    ll()  { eza -lF -- "$@"; }
-    la()  { eza -aF -- "$@"; }
-    lla() { eza -laF -- "$@"; }
-    lt()  { eza -TaF -- "$@"; }
-    llt() { eza -Tal -- "$@"; }
+    alias ls='eza -h --color=auto --group-directories-first'
+    alias l='ls -F'
+    alias ll='ls -lF'
+    alias la='ls -aF'
+    alias lla='ls -laF'
+    alias lt='ls -TaF'
+    alias llt='ls -TalF'
 else
-    l()   { ls -F -- "$@"; }
-    ll()  { ls -lF -- "$@"; }
-    la()  { ls -aF -- "$@"; }
-    lla() { ls -laF -- "$@"; }
-    lt()  { ls -aF -- "$@"; }
-    llt() { ls -laF -- "$@"; }
+    alias ls='command ls -hN --color=auto --group-directories-first'
+    alias l='ls -F'
+    alias ll='ls -lF'
+    alias la='ls -aF'
+    alias lla='ls -laF'
 fi
+
 
 # TMUX
 [ -x "$(command -v tmux)" ] && alias \
