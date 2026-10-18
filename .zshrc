@@ -225,23 +225,53 @@ if command -v yazi >/dev/null 2>&1; then
     alias y='yazi-cd'
 fi
 
+# opencode 
+opc() {
+    local dir reply
+    dir="$(pwd -P)" || return 1
+
+    case "$dir" in
+        "$HOME/local"|"$HOME/local"/*|"$HOME/space"|"$HOME/space"/*|/tmp|/tmp/*) ;;
+        *)
+            printf 'Répertoire non autorisé : %s\nContinue ? [y/N] ' "$dir" >&2
+            read -r reply
+            [[ "$reply" == [yY] ]] || return 1
+            ;;
+    esac
+
+    if ! command -v firejail >/dev/null 2>&1; then
+        echo "Warning: Firejail unavailable"
+        command opencode "$dir"
+        return $?
+    fi
+    command firejail --quiet --caps.drop=all --private-tmp \
+        --read-write="$dir" opencode "$dir"
+}
 # Tmux nvim opencode IDE
 ide() {
     local dir="${1:-.}"
-    local name
     dir="$(cd "$dir" && pwd -P)" || return 1
-    name="${dir#$HOME/}"
-    name="${name//[^a-zA-Z0-9_-]/-}"
-    if tmux has-session -t "$name" 2>/dev/null; then
+    if [[ -n "$TMUX" ]]; then
+        tmux split-window -h -c "$dir" \
+            "zsh -ic 'opc \"\$1\"' _ '$dir'" || return 1
+        exec nvim "$dir"
+    else
+        local name
+        name="${dir#$HOME/}"
+        name="${name//[^a-zA-Z0-9_-]/-}"
+        if tmux has-session -t "$name" 2>/dev/null; then
+            tmux attach -t "$name"
+            return
+        fi
+        tmux new-session -d -s "$name" -n main -c "$dir" "nvim '$dir'"
+        tmux split-window -h -t "$name:main" -c "$dir" \
+            "zsh -ic 'opc \"\$1\"' _ '$dir'"
+        tmux select-pane -L -t "$name:main"
         tmux attach -t "$name"
-        return
     fi
-    tmux new-session -d -s "$name" -n main -c "$dir" "nvim '$dir'"
-    tmux split-window -h -t "$name:main" -c "$dir" "opencode '$dir'"
-    tmux select-pane -L -t "$name:main"
-    tmux attach -t "$name"
 }
 alias i="ide"
+
 
 # list path to other zsh shell opened
 lssh() {
