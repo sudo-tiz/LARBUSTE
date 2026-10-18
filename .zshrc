@@ -1,6 +1,16 @@
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+# Enable colors and change prompt:
+for _gp in \
+    /usr/share/git-core/contrib/completion/git-prompt.sh \
+    /usr/share/git/contrib/completion/git-prompt.sh \
+    /usr/share/git/completion/git-prompt.sh \
+    /usr/lib/git-core/git-sh-prompt ; do
+    [ -r "$_gp" ] && source "$_gp" && break
+done
+setopt PROMPT_SUBST
+PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}%{$fg[cyan]%}$(__git_ps1 "(%s)")%{$reset_color%} $%b "
+
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 setopt interactive_comments
@@ -169,8 +179,8 @@ fi
   gusho='git push -f origin' \
   gash="git stash" \
   gashp="git stash" \
-  gme= "git merge" \
-  gmest="git merge stash" \
+  gmer="git merge" \
+  gmers="git merge stash" \
   gco='git commit -m' \
   gcoa='git commit -amend --no-edit' \
   ga='git add' \

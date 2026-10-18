@@ -2,7 +2,16 @@
 [[ $- != *i* ]] && return
 
 # Enable colors and change prompt:
-PS1='\[\e[1;31m\][\[\e[1;33m\]\u\[\e[1;32m\]@\[\e[1;34m\]\h \[\e[1;35m\]\w\[\e[1;31m\]]\[\e[0m\]$ '
+for _gp in \
+    /usr/share/git-core/contrib/completion/git-prompt.sh \
+    /usr/share/git/contrib/completion/git-prompt.sh \
+    /usr/share/git/completion/git-prompt.sh \
+    /usr/lib/git-core/git-sh-prompt ; do
+    [ -r "$_gp" ] && source "$_gp" && break
+done
+PS1='\[\e[1;31m\][\[\e[1;33m\]\u\[\e[1;32m\]@\[\e[1;34m\]\h \[\e[1;35m\]\w\[\e[1;31m\]]\[\e[0m\]\[\e[1;36m\]$(__git_ps1 "(%s)")\[\e[0m\]\$ '
+
+
 stty stop undef # Disable ctrl-s to freeze terminal.
 
 # History in cache directory:
@@ -68,11 +77,6 @@ alias \
   grep="grep --color=auto" \
   diff="diff --color=auto" \
   ip="ip -color=auto" \
-  ls="ls -hN --color=auto --group-directories-first" \
-  l="ls" \
-  ll="ls -l" \
-  la="ls -aF" \
-  lla="ls -laF" \
   ...="cd ../.." \
   ....="cd ../../.." \
   .....="cd ../../../.." \
@@ -88,19 +92,19 @@ alias \
 
 # LS / EZA
 if command -v eza >/dev/null 2>&1; then
-    l()   { eza -F -- "$@"; }
-    ll()  { eza -lF -- "$@"; }
-    la()  { eza -aF -- "$@"; }
-    lla() { eza -laF -- "$@"; }
-    lt()  { eza -TaF -- "$@"; }
-    llt() { eza -Tal -- "$@"; }
+    alias ls='eza -h --color=auto --group-directories-first' \
+          l='ls -F' \
+          ll='ls -lF' \
+          la='ls -aF' \
+          lla='ls -laF' \
+          lt='ls -TaF' \
+          llt='ls -TalF'
 else
-    l()   { ls -F -- "$@"; }
-    ll()  { ls -lF -- "$@"; }
-    la()  { ls -aF -- "$@"; }
-    lla() { ls -laF -- "$@"; }
-    lt()  { ls -aF -- "$@"; }
-    llt() { ls -laF -- "$@"; }
+    alias ls='command ls -hN --color=auto --group-directories-first' \
+          l='ls -F' \
+          ll='ls -lF' \
+          la='ls -aF' \
+          lla='ls -laF'
 fi
 
 # YAZI
@@ -187,8 +191,8 @@ fi
   gusho='git push -f origin' \
   gash="git stash" \
   gashp="git stash" \
-  gme= "git merge" \
-  gmest="git merge stash" \
+  gmer="git merge" \
+  gmers="git merge stash" \
   gco='git commit -m' \
   gcoa='git commit -amend --no-edit' \
   ga='git add' \
