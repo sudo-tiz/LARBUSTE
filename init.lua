@@ -38,7 +38,7 @@ opt.completeopt = {
   "noinsert",
 }
 
-vim.cmd.colorscheme("habamax")
+vim.cmd("colorscheme slate")
 
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
@@ -121,8 +121,8 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function(data)
     if data.file ~= "" and vim.fn.isdirectory(data.file) == 1 then
-      vim.cmd.cd(vim.fn.fnameescape(data.file))
-      vim.cmd.Lexplore()
+      vim.cmd("cd " .. vim.fn.fnameescape(data.file))
+      vim.cmd("Lexplore")
     end
   end,
 })
