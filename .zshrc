@@ -18,7 +18,6 @@ setopt interactive_comments
 # History in cache directory:
 HISTSIZE=10000000
 SAVEHIST=10000000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 setopt HIST_REDUCE_BLANKS   # Remove superfluous blanks
 setopt HIST_VERIFY          # Show command before executing from history
 setopt SHARE_HISTORY        # Share history between sessions
