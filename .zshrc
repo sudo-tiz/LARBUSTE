@@ -9,7 +9,7 @@ for _gp in \
     [ -r "$_gp" ] && source "$_gp" && break
 done
 setopt PROMPT_SUBST
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}%{$fg[cyan]%}$(__git_ps1 "(%s)")%{$reset_color%} $%b "
+PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}%{$fg[cyan]%}\$(__git_ps1 '(%s)')%{$reset_color%} $%b "
 
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
@@ -304,9 +304,11 @@ cs() {
 }
 
 # qrencode any file and print it
-[ -x "$(command -v convert)" ] && qr(){
-  local o; o=$(mktemp) && qrencode -r "$1" -o "$o" -t UTF8 && cat "$o"; 
-}
+if [ -x "$(command -v qrencode)" ] && [ -z "$(command -v qr)" ]; then
+    qr() {
+        local o; o=$(mktemp) && qrencode -r "$1" -o "$o" -t UTF8 && cat "$o";
+    }
+fi   
 
 ch() { curl "http://cheat.sh/$1"; }
 # Backup functions

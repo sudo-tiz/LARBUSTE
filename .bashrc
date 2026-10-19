@@ -280,9 +280,11 @@ cs() {
 }
 
 # qrencode any file and print it
-[ -x "$(command -v convert)" ] && qr(){
-  local o; o=$(mktemp) && qrencode -r "$1" -o "$o" -t UTF8 && cat "$o";
-}
+if [ -x "$(command -v qrencode)" ] && [ -z "$(command -v qr)" ]; then
+    qr() {
+        local o; o=$(mktemp) && qrencode -r "$1" -o "$o" -t UTF8 && cat "$o";
+    }
+fi   
 
 ch() { curl "http://cheat.sh/$1"; }
 # Backup functions
