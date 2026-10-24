@@ -218,7 +218,8 @@ if command -v yazi >/dev/null 2>&1; then
       [[ -f "$tmp" ]] || return
       dir="$(<"$tmp")"
       [[ -d "$dir" ]] && cd -- "$dir"
-    }    alias y='yazi-cd'
+    }
+  alias y='yazi-cd'
 fi
 
 # opencode 
