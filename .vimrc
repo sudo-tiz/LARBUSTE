@@ -148,3 +148,9 @@ augroup open_directory_in_netrw
         \ Lexplore |
         \ endif
 augroup END
+
+augroup netrw_mappings
+  autocmd!
+  autocmd FileType netrw nmap <buffer> l <CR>
+  autocmd FileType netrw nmap <buffer> h -
+augroup END

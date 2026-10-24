@@ -126,3 +126,11 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "netrw",
+  callback = function(ev)
+    map("n", "l", "<CR>", { buffer = ev.buf, remap = true, desc = "Open dir/file" })
+    map("n", "h", "-", { buffer = ev.buf, remap = true, desc = "Parent dir" })
+  end,
+})
