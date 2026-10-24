@@ -93,19 +93,19 @@ alias \
 
 # LS / EZA
 if command -v eza >/dev/null 2>&1; then
-    alias ls='eza -h --color=auto --group-directories-first'
-    alias l='ls -F'
-    alias ll='ls -lF'
-    alias la='ls -aF'
-    alias lla='ls -laF'
-    alias lt='ls -TaF'
-    alias llt='ls -TalF'
+    alias ls='eza --group-directories-first' \
+          l='eza --classify --group-directories-first' \
+          ll='eza --classify --group-directories-first -l' \
+          la='eza --classify --group-directories-first -a' \
+          lla='eza --classify -la --group-directories-first' \
+          lt='eza --classify --group-directories-first -Ta' \
+          llt='eza --classify -Tal --group-directories-first'
 else
-    alias ls='command ls -hN --color=auto --group-directories-first'
-    alias l='ls -F'
-    alias ll='ls -lF'
-    alias la='ls -aF'
-    alias lla='ls -laF'
+    alias ls='command ls --color=auto --group-directories-first' \
+          l='command ls --color=auto --group-directories-first -F' \
+          ll='command ls --color=auto --group-directories-first -lhF' \
+          la='command ls --color=auto --group-directories-first -aF' \
+          lla='command ls --color=auto --group-directories-first -lahF'
 fi
 
 
