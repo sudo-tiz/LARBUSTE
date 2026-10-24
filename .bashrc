@@ -15,13 +15,9 @@ PS1='\[\e[1;31m\][\[\e[1;33m\]\u\[\e[1;32m\]@\[\e[1;34m\]\h \[\e[1;35m\]\w\[\e[1
 stty stop undef # Disable ctrl-s to freeze terminal.
 
 # History in cache directory:
-HISTSIZE=10000000
-HISTFILESIZE=10000000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/bash/history"
-# Create cache directory if it doesn't exist
-mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/bash"
-
-# History options (bash equivalents)
+HISTSIZE=100000
+HISTFILESIZE=100000
+HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/bash_history"
 HISTCONTROL=ignoreboth:erasedups # Don't record duplicate entries and entries starting with space
 shopt -s histappend              # Append to history file, don't overwrite
 shopt -s histverify              # Show command before executing from history
@@ -46,7 +42,6 @@ bind 'set show-all-if-ambiguous on'
 
 # vi mode
 set -o vi
-export KEYTIMEOUT=1
 
 # Bash vi mode cursor shapes and key bindings
 bind 'set keymap vi-insert'
@@ -73,7 +68,6 @@ alias \
   rm="rm -rf" \
   bc="bc -ql" \
   mkd="mkdir -pv" \
-  mdtemp="cd $(mktemp -d)" \
   grep="grep --color=auto" \
   diff="diff --color=auto" \
   ip="ip -color=auto" \
@@ -114,12 +108,9 @@ if command -v yazi >/dev/null 2>&1; then
         tmp="$(mktemp)" || return 1
         trap 'rm -f -- "$tmp"' EXIT HUP INT QUIT TERM
         yazi --cwd-file "$tmp" "$@" || return
-        if [[ -f "$tmp" ]]; then
-            dir="$(<"$tmp")"
-            if [[ -d "$dir" && "$dir" != "$PWD" ]]; then
-                cd -- "$dir" && exec "${SHELL:-bash}"
-            fi
-        fi
+        [[ -f "$tmp" ]] || return
+        dir="$(<"$tmp")"
+        [[ -d "$dir" ]] && cd -- "$dir"
     )
     alias y='yazi-cd'
 fi
@@ -176,7 +167,6 @@ fi
   kl="kubectl logs" \
   kgpo="kubectl get pod" \
   kgd="kubectl get deployments" \
-  kl="kubectl logs -f" \
   ke="kubectl exec -it" \
   kcns='kubectl config set-context --current --namespace'
 
@@ -190,11 +180,11 @@ fi
   gush='git push' \
   gusho='git push -f origin' \
   gash="git stash" \
-  gashp="git stash" \
+  gashp="git stash pop" \
   gmer="git merge" \
   gmers="git merge stash" \
   gco='git commit -m' \
-  gcoa='git commit -amend --no-edit' \
+  gcoa='git commit --amend --no-edit' \
   ga='git add' \
   gr='git restore' \
   grs='git restore --staged' \
@@ -208,8 +198,7 @@ fi
   gchb="git checkout -b" \
   gsiu="git submodule init && git submodule update" \
   gsur="git submodule update --remote" \
-  gls='ls --group-directories-first --color=auto -d $(git ls-tree $(git branch | grep \* | cut -d " " -f2) --name-only)' \
-  gtree='ls --group-directories-first --color=auto -d $(git ls-tree -r $(git branch | grep \* | cut -d " " -f2) --name-only)' \
+  gls='git ls-files' \
   grao='git remote rm origin; git remote add origin' &&
   gdi() { git diff --name-only --relative --diff-filter=d | xargs bat --diff; }
 
@@ -286,7 +275,8 @@ if [ -x "$(command -v qrencode)" ] && [ -z "$(command -v qr)" ]; then
     }
 fi   
 
-ch() { curl "http://cheat.sh/$1"; }
+mdtemp() { cd -- "$(mktemp -d)"; }
+ch() { curl "https://cheat.sh/$1"; }
 # Backup functions
 old() { mv "$1" "$1.old"; }
 bak() { cp "$1" "$1.bak"; }

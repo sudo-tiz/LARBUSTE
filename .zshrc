@@ -1,26 +1,24 @@
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
 # Enable colors and change prompt:
-for _gp in \
-    /usr/share/git-core/contrib/completion/git-prompt.sh \
-    /usr/share/git/contrib/completion/git-prompt.sh \
-    /usr/share/git/completion/git-prompt.sh \
-    /usr/lib/git-core/git-sh-prompt ; do
-    [ -r "$_gp" ] && source "$_gp" && break
-done
+autoload -Uz vcs_info
+precmd() { vcs_info }
 setopt PROMPT_SUBST
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}%{$fg[cyan]%}\$(__git_ps1 '(%s)')%{$reset_color%} $%b "
+PROMPT='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}%{$fg[cyan]%}${vcs_info_msg_0_}%{$reset_color%} $%b '
+zstyle ':vcs_info:git:*' formats '(%b)'
 
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 setopt interactive_comments
 
 # History in cache directory:
-HISTSIZE=10000000
-SAVEHIST=10000000
-setopt HIST_REDUCE_BLANKS   # Remove superfluous blanks
-setopt HIST_VERIFY          # Show command before executing from history
-setopt SHARE_HISTORY        # Share history between sessions
+[[ -d "$HOME/.cache" ]] || mkdir -p "$HOME/.cache"
+HISTFILE="$HOME/.cache/zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+setopt INC_APPEND_HISTORY
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -77,7 +75,6 @@ alias \
     rm="rm -rf" \
     bc="bc -ql" \
     mkd="mkdir -pv" \
-    mdtemp="cd $(mktemp -d)" \
     grep="grep --color=auto" \
     diff="diff --color=auto" \
     ip="ip -color=auto" \
@@ -163,7 +160,6 @@ fi
   kl="kubectl logs" \
   kgpo="kubectl get pod" \
   kgd="kubectl get deployments" \
-  kl="kubectl logs -f" \
   ke="kubectl exec -it" \
   kcns='kubectl config set-context --current --namespace' \
 
@@ -177,11 +173,11 @@ fi
   gush='git push' \
   gusho='git push -f origin' \
   gash="git stash" \
-  gashp="git stash" \
+  gashp="git stash pop" \
   gmer="git merge" \
   gmers="git merge stash" \
   gco='git commit -m' \
-  gcoa='git commit -amend --no-edit' \
+  gcoa='git commit --amend --no-edit' \
   ga='git add' \
   gr='git restore' \
   grs='git restore --staged' \
@@ -195,8 +191,7 @@ fi
   gchb="git checkout -b" \
   gsiu="git submodule init && git submodule update" \
   gsur="git submodule update --remote" \
-  gls='ls --group-directories-first --color=auto -d $(git ls-tree $(git branch | grep \* | cut -d " " -f2) --name-only)' \
-  gtree='ls --group-directories-first --color=auto -d $(git ls-tree -r $(git branch | grep \* | cut -d " " -f2) --name-only)' \
+  gls='git ls-files' \
   grao='git remote rm origin; git remote add origin'  &&
   gdi() { git diff --name-only --relative --diff-filter=d | xargs bat --diff; }
 
@@ -215,19 +210,15 @@ alias \
 
 # YAZI
 if command -v yazi >/dev/null 2>&1; then
-    yazi-cd() (
-        local tmp dir
-        tmp="$(mktemp)" || return 1
-        trap 'rm -f -- "$tmp"' EXIT HUP INT QUIT TERM
-        yazi --cwd-file "$tmp" "$@" || return
-        if [[ -f "$tmp" ]]; then
-            dir="$(<"$tmp")"
-            if [[ -d "$dir" && "$dir" != "$PWD" ]]; then
-                cd -- "$dir" && exec "${SHELL:-bash}"
-            fi
-        fi
-    )
-    alias y='yazi-cd'
+  yazi-cd() {
+      local tmp dir
+      tmp="$(mktemp)" || return 1
+      trap 'rm -f -- "$tmp"' EXIT HUP INT QUIT TERM
+      yazi --cwd-file "$tmp" "$@" || return
+      [[ -f "$tmp" ]] || return
+      dir="$(<"$tmp")"
+      [[ -d "$dir" ]] && cd -- "$dir"
+    }    alias y='yazi-cd'
 fi
 
 # opencode 
@@ -310,7 +301,9 @@ if [ -x "$(command -v qrencode)" ] && [ -z "$(command -v qr)" ]; then
     }
 fi   
 
-ch() { curl "http://cheat.sh/$1"; }
+ch() { curl "https://cheat.sh/$1"; }
+mdtemp() { cd -- "$(mktemp -d)"; }
+
 # Backup functions
 old() { mv "$1" "$1.old"; }
 bak() { cp "$1" "$1.bak"; }
