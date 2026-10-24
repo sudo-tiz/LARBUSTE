@@ -13,6 +13,9 @@ Minimal dotfiles for a fresh Linux box: Neovim, Tmux, Zsh, Bash. vi-mode, sane d
 # Dependencies
 sudo apt update && sudo apt install -y zsh neovim git tmux
 
+# Tmux
+curl --create-dirs -Lo ~/.config/tmux/tmux.conf https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/tmux.conf
+
 # Vim + Bash
 curl -Lo ~/.vimrc https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/.vimrc
 curl -Lo ~/.bashrc https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/.bashrc
@@ -21,9 +24,6 @@ curl -Lo ~/.bashrc https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/.bas
 curl --create-dirs -Lo ~/.config/nvim/init.lua https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/init.lua
 curl -Lo ~/.zshrc https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/.zshrc
 chsh -s $(which zsh) && exec zsh
-
-# Tmux
-curl --create-dirs -Lo ~/.config/tmux/tmux.conf https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/tmux.conf
 ```
 
 Tmux plugins: set `@enable_*=1` in `tmux.conf`, then `prefix + I`.
