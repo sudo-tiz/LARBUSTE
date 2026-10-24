@@ -1,8 +1,13 @@
-# Fast Linux Config
+# LARBUSTE
 
-Minimal dotfiles: Neovim, Tmux, Zsh, Bash. vi-mode, sane defaults, git/docker/k8s aliases.
+![Neovim](https://img.shields.io/badge/Neovim-57A143?logo=neovim&logoColor=white)
+![Tmux](https://img.shields.io/badge/Tmux-1BB91F?logo=tmux&logoColor=white)
+![Zsh](https://img.shields.io/badge/Zsh-F15A24?logo=zsh&logoColor=white)
+![Bash](https://img.shields.io/badge/Bash-4EAA25?logo=gnubash&logoColor=white)
 
-## Setup
+Minimal dotfiles for a fresh Linux box: Neovim, Tmux, Zsh, Bash. vi-mode, sane defaults, git/docker/k8s aliases.
+
+## Quick start
 
 ```bash
 # Dependencies
@@ -21,9 +26,9 @@ chsh -s $(which zsh) && exec zsh
 curl --create-dirs -Lo ~/.config/tmux/tmux.conf https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/tmux.conf
 ```
 
-**Neovim plugins**: Use `init.plugins.lua` instead of `init.lua` (lazy.nvim, NvChad, LSP, blink.cmp).
+Tmux plugins: set `@enable_*=1` in `tmux.conf`, then `prefix + I`.
 
-**Tmux plugins**: Set `@enable_*=1` in tmux.conf, then `prefix + I`.
+Ansible: deployed by the `larbuste` role of [math-playbook](https://github.com/sudo-Tiz/math-playbook).
 
 ## Optional Tools
 
@@ -46,14 +51,14 @@ sudo apt install -y fzf eza bat ripgrep yazi
 
 **Functions**: `ide <dir>` (tmux+nvim+opencode), `cs` (fzf shell navigator), `lssh`, `bak`, `ch`.
 
-**Neovim**: Vanilla or plugins. See [nvim repo](https://github.com/sudo-Tiz/nvim).
+**Neovim**: vanilla `init.lua`; extended config in [nvim](https://github.com/sudo-Tiz/nvim).
 
 **Tmux**: vi-nav, split-right, split-below, TPM optional.
 
 ## Related
 
-- **[nvim](https://github.com/sudo-Tiz/nvim)** — Extended Neovim config (treesitter, telescope, etc.)
-- **[opencode](https://github.com/sudo-Tiz/opencode)** — AI-powered terminal IDE
-- **[LARBRE](https://github.com/sudo-Tiz/LARBRE)** — Arch Linux auto-setup (Hyprland, dotfiles, DNS)
-- **[dotfilesV2](https://github.com/sudo-Tiz/dotfilesV2)** — Full dotfiles manager
+- [LARBRE](https://github.com/sudo-Tiz/LARBRE) — Arch Linux auto-setup (Hyprland, dotfiles, secure DNS)
+- [JARDIN](https://github.com/sudo-Tiz/JARDIN) — Ansible self-hosting playbooks
+- [nvim](https://github.com/sudo-Tiz/nvim) — Extended Neovim config
+- [dotfilesV2](https://github.com/sudo-Tiz/dotfilesV2) — Full dotfiles manager
 
