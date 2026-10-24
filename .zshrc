@@ -18,7 +18,7 @@ HISTSIZE=100000
 SAVEHIST=100000
 setopt INC_APPEND_HISTORY
 setopt HIST_REDUCE_BLANKS
-setopt HIST_VERIFY
+setopt HIST_IGNORE_DUPS
 
 # Basic auto/tab complete:
 autoload -U compinit
