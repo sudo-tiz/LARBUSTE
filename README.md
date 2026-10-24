@@ -9,16 +9,16 @@ Minimal dotfiles: Neovim, Tmux, Zsh, Bash. vi-mode, sane defaults, git/docker/k8
 sudo apt update && sudo apt install -y zsh neovim git tmux
 
 # Vim + Bash
-curl -Lo ~/.vimrc https://raw.githubusercontent.com/sudo-Tiz/fast_linux_config/main/.vimrc
-curl -Lo ~/.bashrc https://raw.githubusercontent.com/sudo-Tiz/fast_linux_config/main/.bashrc
+curl -Lo ~/.vimrc https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/.vimrc
+curl -Lo ~/.bashrc https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/.bashrc
 
 # Neovim + Zsh
-curl --create-dirs -Lo ~/.config/nvim/init.lua https://raw.githubusercontent.com/sudo-Tiz/fast_linux_config/main/init.lua
-curl -Lo ~/.zshrc https://raw.githubusercontent.com/sudo-Tiz/fast_linux_config/main/.zshrc
+curl --create-dirs -Lo ~/.config/nvim/init.lua https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/init.lua
+curl -Lo ~/.zshrc https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/.zshrc
 chsh -s $(which zsh) && exec zsh
 
 # Tmux
-curl --create-dirs -Lo ~/.config/tmux/tmux.conf https://raw.githubusercontent.com/sudo-Tiz/fast_linux_config/main/tmux.conf
+curl --create-dirs -Lo ~/.config/tmux/tmux.conf https://raw.githubusercontent.com/sudo-Tiz/LARBUSTE/main/tmux.conf
 ```
 
 **Neovim plugins**: Use `init.plugins.lua` instead of `init.lua` (lazy.nvim, NvChad, LSP, blink.cmp).
