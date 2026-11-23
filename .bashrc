@@ -175,6 +175,7 @@ fi
 [ -x "$(command -v git)" ] && alias \
   g="git" \
   gd="git diff" \
+  gds="git diff --staged" \
   gcl='git clone' \
   gull='git pull' \
   gullp='git stash && git pull && git stash pop' \
