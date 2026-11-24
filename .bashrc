@@ -215,7 +215,6 @@ alias \
 [ -x "$(command -v rsync)" ] && alias \
   cpv='rsync -ah --info=progress2' \
   mvv='rsync -ah --remove-source-files --info=progress2'
-
 ide() {
     local dir="${1:-.}"
     local name
@@ -230,16 +229,16 @@ ide() {
         -s "$name" \
         -n main \
         -c "$dir" \
-        "nvim '$dir'"
+        "bash -l"
     tmux split-window -h \
         -t "$name:main" \
         -c "$dir" \
-        "zsh -ic 'opc \"\$1\"' _ '$dir'"
+        "bash -ic 'opc \"\$1\"' _ '$dir'"
     tmux select-pane -L -t "$name:main"
     tmux split-window -v \
         -t "$name:main" \
         -c "$dir" \
-        "zsh"
+        "bash -i"
     tmux resize-pane -y 2 \
         -t "$name:main"
     tmux attach -t "$name"
