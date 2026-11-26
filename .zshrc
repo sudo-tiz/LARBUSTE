@@ -311,5 +311,12 @@ old() { mv "$1" "$1.old"; }
 bak() { cp "$1" "$1.bak"; }
 baktar() { tar -zcvf "${1}_$(date '+%Y-%m-%d_%H-%M').tar.gz" "$1"; }
 
+# Optional inline suggestions from command history.
+for _zsa in \
+    /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+    /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh; do
+    [[ -r "$_zsa" ]] && source "$_zsa" && break
+done
+
 # Load syntax highlighting; should be last.
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null

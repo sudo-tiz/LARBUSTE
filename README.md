@@ -39,10 +39,12 @@ Ansible: deployed by the `larbuste` role of [math-playbook](https://github.com/s
 | bat | `bat` | Syntax-highlighted `cat`; git diffs |
 | ripgrep | `ripgrep` | Fast `rg` grep |
 | yazi | `yazi` | terminal file manager |
+| bash-completion | `bash-completion` | Command-specific Bash completion |
+| zsh-autosuggestions | `zsh-autosuggestions` | Inline suggestions from Zsh history |
 
 ```bash
 # Ubuntu/Debian
-sudo apt install -y fzf eza bat ripgrep yazi
+sudo apt install -y fzf eza bat ripgrep yazi bash-completion zsh-autosuggestions
 ```
 
 ## Features
@@ -61,4 +63,3 @@ sudo apt install -y fzf eza bat ripgrep yazi
 - [JARDIN](https://github.com/sudo-Tiz/JARDIN) — Ansible self-hosting playbooks
 - [nvim](https://github.com/sudo-Tiz/nvim) — Extended Neovim config
 - [dotfilesV2](https://github.com/sudo-Tiz/dotfilesV2) — Full dotfiles manager
-
