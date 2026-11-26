@@ -251,8 +251,9 @@ ide() {
     dir="$(cd "$dir" && pwd -P)" || return 1
     if [[ -n "$TMUX" ]]; then
         tmux split-window -h -c "$dir" \
-            "zsh -ic 'opc \"\$1\"' _ '$dir'" || return 1
-        exec zsh -l
+            "zsh -l" || return 1
+        tmux select-pane -L || return 1
+        opc "$dir"
     else
         local name
         name="${dir#$HOME/}"
@@ -261,9 +262,8 @@ ide() {
             tmux attach -t "$name"
             return
         fi
-        tmux new-session -d -s "$name" -n main -c "$dir" "zsh -l"
-        tmux split-window -h -t "$name:main" -c "$dir" \
-            "zsh -ic 'opc \"\$1\"' _ '$dir'"
+        tmux new-session -d -s "$name" -n main -c "$dir" "zsh -ic 'opc'"
+        tmux split-window -h -t "$name:main" -c "$dir" "zsh -l"
         tmux select-pane -L -t "$name:main"
         tmux attach -t "$name"
     fi

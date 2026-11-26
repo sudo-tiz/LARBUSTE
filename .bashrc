@@ -229,18 +229,12 @@ ide() {
         -s "$name" \
         -n main \
         -c "$dir" \
-        "bash -l"
+        "bash -ic 'opc \"\$1\"' _ '$dir'"
     tmux split-window -h \
         -t "$name:main" \
         -c "$dir" \
-        "bash -ic 'opc \"\$1\"' _ '$dir'"
+        "bash -l"
     tmux select-pane -L -t "$name:main"
-    tmux split-window -v \
-        -t "$name:main" \
-        -c "$dir" \
-        "bash -i"
-    tmux resize-pane -y 2 \
-        -t "$name:main"
     tmux attach -t "$name"
 }
 
